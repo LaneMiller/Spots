@@ -27,7 +27,7 @@ myAddressSearchBox.addEventListener('keydown', (e)=>{
     const myMapBoundries = mymap.getBounds()
      const uri = `https://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=${encodeURIComponent(addressQuery)}&countrycodes=us&viewbox=${mymap.getBounds()._northEast.lat},${mymap.getBounds()._northEast.lng},${mymap.getBounds()._southWest.lat},${mymap.getBounds()._southWest.lng}&format=json&limit=1`
 
-     fetch(uri).then(json=>json.json()).then(json=>placePin(json));
+     fetch(uri).then(json=>json.json()).then(json=>placePin(json)).then(e.target.value = '').catch(alert("not found"))
 
   };
 })
