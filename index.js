@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 const myLocButton = document.getElementById('my-location-button')
 const myAddressSearchBox = document.getElementById('primary-input')
 
+
 let myLat
 let myLon
 let origins = {}
@@ -26,7 +27,7 @@ myAddressSearchBox.addEventListener('keydown', (e)=>{
     const myMapBoundries = mymap.getBounds()
      const uri = `https://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=${encodeURIComponent(addressQuery)}&countrycodes=us&viewbox=${mymap.getBounds()._northEast.lat},${mymap.getBounds()._northEast.lng},${mymap.getBounds()._southWest.lat},${mymap.getBounds()._southWest.lng}&format=json&limit=1`
 
-     fetch(uri).then(json=>json.json()).then(json=>placePin([json[0].lat,json[0].lon], json[0].display_name));
+     fetch(uri).then(json=>json.json()).then(json=>placePin(json));
 
   };
 })
@@ -37,13 +38,31 @@ function getPlaceFromAddress(addressString) {
 }
 
 
-function placePin(coordsArray, popuptext) {
-  console.log(coordsArray, popuptext)
+function placePin(json) {
+  coordsArray = [json[0].lat, json[0].lon]
+  popuptext = json[0].address.postcode
   let newMarker = new L.marker(coordsArray).addTo(mymap);
   newMarker.addTo(markers)
   newMarker.bindPopup(`${popuptext}`);
   mymap.fitBounds(markers.getBounds())
+  addOriginIcon(json, newMarker)
 }
+
+function addOriginIcon(json, marker) {
+  const newOriginPoint = document.createElement('div')
+  const originPointsContainer = document.getElementById('origin-points-icons')
+  newOriginPoint.setAttribute('id',`originMarker-${marker._leaflet_id}`)
+  newOriginPoint.innerHTML = `<p>${json[0].address.postcode}</p>`
+  originPointsContainer.append(newOriginPoint)
+
+  newOriginPoint.addEventListener('click', (e)=>{
+    marker.remove()
+    newOriginPoint.remove()
+  })
+}
+
+
+
 
 
 var mymap = L.map('mapid').setView([40.704769000000006, -74.0132667], 15);

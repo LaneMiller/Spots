@@ -1,9 +1,27 @@
 #mapid {
-  height: 180px;
+  height: 600px;
+  width: auto;
 }
 
 #form-field{
   width: auto;
   height: 10em;
   background-color: #ffffd4;
+}
+
+#origin-points-icons > div {
+  display: inline-block;
+  border: 3px solid red;
+  border-radius: 50%;
+  margin-left: 5px;
+  margin-top: 5px;
+  height: 5em;
+  width: 5em;
+  background-color: #d95f0e
+}
+
+#origin-points-icons > div > p {
+  text-align: center;
+  vertical-align: middle;
+  line-height: 3em;
 }
