@@ -56,6 +56,7 @@ function addOriginIcon(json, marker) {
   originPointsContainer.append(newOriginPoint)
 
   newOriginPoint.addEventListener('click', (e)=>{
+    markers.removeLayer(marker)
     marker.remove()
     newOriginPoint.remove()
   })
