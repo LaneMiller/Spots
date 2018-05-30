@@ -73,20 +73,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function findAverage(coordinatesObj) {
-    const coordinates = Object.values(coordinatesObj)
-    const lats = coordinates.map(coord => coord[0]);
-    const lons = coordinates.map(coord => coord[1]);
+    if (Object.keys(coordinatesObj).length !== 0) {
+      const coordinates = Object.values(coordinatesObj)
+      const lats = coordinates.map(coord => coord[0]);
+      const lons = coordinates.map(coord => coord[1]);
 
-    const reducer = (accumulator, currentValue) => accumulator + currentValue
-    const newLat = lats.reduce(reducer) / lats.length
-    const newLon = lons.reduce(reducer) / lons.length
-    if (averagePin){
-      averagePin.remove()
+      const reducer = (accumulator, currentValue) => accumulator + currentValue
+      const newLat = lats.reduce(reducer) / lats.length
+      const newLon = lons.reduce(reducer) / lons.length
+
+      if (averagePin) {
+        averagePin.remove()
+      }
+      averagePin = new L.marker([newLat, newLon]).addTo(mymap);
+      averagePin.bindPopup(`Average Point`);
     }
-     averagePin = new L.marker([newLat, newLon]).addTo(mymap);
-     averagePin.bindPopup(`Average Point`);
+    else {
+      averagePin.remove()
+      averagePin = undefined;
+    }
   }
-
 
 
   // Sets up map field
@@ -121,12 +127,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
       categoryDiv.addEventListener('click', buttonHandler);
     }
 
-    const testPoint = [40.706865, -74.011318];
-
     function buttonHandler(event) {
-      if (event.target.tagName === 'BUTTON') {
+      if (event.target.tagName === 'BUTTON' && averagePin) {
+        const avgPoint = [averagePin._latlng.lat, averagePin._latlng.lng];
         const categories = fetchOperations.fetchCategory(event.target.dataset.id).then(data => {
-          const shortest = shortestDistance(data.locations, testPoint);
+          const shortest = shortestDistance(data.locations, avgPoint);
           fetchOperations.fetchLocation(shortest[1].id).then(data => {categoryDiv.innerHTML += addShortestHTML(data)})
 
           function addShortestHTML(data) {
@@ -136,46 +141,48 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     }
 
+    function shortestDistance(locations, avgPoint) {
+      const array  = locations.map(location => distanceCalc(parseFloat(location.x_lon), avgPoint[0], parseFloat(location.y_lat), avgPoint[1]))
+      const  shortest =  [...array].sort()[0];
+      return [shortest, locations[array.indexOf(shortest)]];
+    }
+
+    function distanceCalc(x1, x2, y1, y2) {
+      return Math.sqrt((x2 - x1)**2 +  (y2 - y1)**2);
+    }
+
     fetchCategory();
     addCategoryListener();
-  })
+  }) // End of DOMContentLoaded event
 
-  function shortestDistance(locations, testPoint) {
-    const array  = locations.map(location => distanceCalc(parseFloat(location.x_lon), testPoint[0], parseFloat(location.y_lat), testPoint[1]))
-    const  shortest =  [...array].sort()[0];
-    return [shortest, locations[array.indexOf(shortest)]];
+
+//fetch Adapter
+const fetchOperations = {
+  locationUrl: "http://localhost:3000/api/v1/locations/",
+  categoryUrl: "http://localhost:3000/api/v1/categories/",
+  parseJson: function(response) {
+    return response.json();
+  },
+  fetchCategories: function() {
+    return fetch(this.categoryUrl).then(this.parseJson);
+  },
+  fetchCategory: function(id) {
+    return fetch(`${this.categoryUrl}/${id}`).then(this.parseJson);
+  },
+  fetchLocations: function() {
+    return fetch(this.locationUrl).then(this.parseJson);
+  },
+  fetchLocation: function(id) {
+    return fetch(`${this.locationUrl}/${id}`).then(this.parseJson);
   }
-
-  function distanceCalc(x1, x2, y1, y2) {
-    return Math.sqrt((x2 - x1)**2 +  (y2 - y1)**2);
-  }
-
-  const fetchOperations = {
-    locationUrl: "http://localhost:3000/api/v1/locations/",
-    categoryUrl: "http://localhost:3000/api/v1/categories/",
-    parseJson: function(response) {
-      return response.json();
-    },
-    fetchCategories: function() {
-      return fetch(this.categoryUrl).then(this.parseJson);
-    },
-    fetchCategory: function(id) {
-      return fetch(`${this.categoryUrl}/${id}`).then(this.parseJson);
-    },
-    fetchLocations: function() {
-      return fetch(this.locationUrl).then(this.parseJson);
-    },
-    fetchLocation: function(id) {
-      return fetch(`${this.locationUrl}/${id}`).then(this.parseJson);
+  /*
+  headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+  generateConfig: function(method,body) {
+    return {
+      method: method,
+      headers: this.headers
+      body: JSON.stringify(body)
     }
-    /*
-    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-    generateConfig: function(method,body) {
-      return {
-        method: method,
-        headers: this.headers
-        body: JSON.stringify(body)
-      }
-    }
-    */
   }
+  */
+}
