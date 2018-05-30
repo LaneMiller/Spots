@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   let myLat
   let myLon
-  let origins = []
+  let origins = {}
   var markers = new L.featureGroup([]);
 
   //Gets current location of user by Lat and Lon
@@ -17,19 +17,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
       myLon = position.coords.longitude
       // origins.push( [myLat,myLon] ) this now happens inside of placePin()
       placePin([myLat,myLon])
-      mymap.setView([myLat, myLon], 15); })
-
+      // mymap.setView([myLat, myLon], 15);
+    })
   })
 
   //adds address and area search functionality and sets map bounds to show all current markers
   myAddressSearchBox.addEventListener('keydown', (e)=>{
     if (e.key === 'Enter'){
       const addressQuery = e.target.value
-      const myMapBoundries = mymap.getBounds() // is this line necessary? <!>
+      // const myMapBoundries = mymap.getBounds() // is this line necessary? <!>
       const uri = `https://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=${encodeURIComponent(addressQuery)}&countrycodes=us&viewbox=${mymap.getBounds()._northEast.lat},${mymap.getBounds()._northEast.lng},${mymap.getBounds()._southWest.lat},${mymap.getBounds()._southWest.lng}&format=json&limit=1`
 
-      fetch(uri).then(json=>json.json()).then(json=>placePin([json[0].lat, json[0].lon], json[0].address.postcode)).then(e.target.value = '')
-
+      fetch(uri).then(json=>json.json()).then(json=>{debugger; placePin([parseFloat(json[0].lat), parseFloat(json[0].lon)], addressQuery)}).then(e.target.value = '')
     };
   })
 
@@ -39,10 +38,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   //Places pin/marker on map for given coords, passes popuptext to addOriginIcon()
-  function placePin(coordsArray, spotText) {
+  function placePin(coordsArray, address) {
 
-    if (spotText) {
-      popuptext = spotText
+    if (address) {
+      popuptext = address
     } else {
       popuptext = "MyLocation"
     }
@@ -52,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     newMarker.bindPopup(`${popuptext}`);
     mymap.fitBounds(markers.getBounds())
     addOriginIcon(popuptext, newMarker)
-    origins.push(coordsArray)
+    origins[popuptext] = coordsArray
     findAverage(origins)
   }
 
@@ -65,17 +64,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
     originPointsContainer.append(newOriginPoint)
 
     newOriginPoint.addEventListener('click', (e)=>{
-      debugger
-      console.log(origins);
+      delete origins[marker._popup._content]
       markers.removeLayer(marker);
       marker.remove();
       newOriginPoint.remove();
+      findAverage(origins)
     })
   }
 
-  function findAverage(coordinates) {
-    const lats = coordinates.map(coord => parseFloat(coord[0]));
-    const lons = coordinates.map(coord => parseFloat(coord[1]));
+  function findAverage(coordinatesObj) {
+    const coordinates = Object.values(coordinatesObj)
+    const lats = coordinates.map(coord => coord[0]);
+    const lons = coordinates.map(coord => coord[1]);
 
     const reducer = (accumulator, currentValue) => accumulator + currentValue
     const newLat = lats.reduce(reducer) / lats.length
@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       averagePin.remove()
     }
      averagePin = new L.marker([newLat, newLon]).addTo(mymap);
+     averagePin.bindPopup(`Average Point`);
   }
 
 
