@@ -1,0 +1,1 @@
+const mapboxAPI = "pk.eyJ1Ijoic3VwZXJqZXNzZWgiLCJhIjoiY2podDVhb2JlMGE0dzNxbWU5ZmtwdDd1dSJ9.omj2pC-BgYgmFAogdJd0pw"
