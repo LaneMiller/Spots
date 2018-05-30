@@ -6,7 +6,7 @@ const myAddressSearchBox = document.getElementById('primary-input')
 
 let myLat
 let myLon
-let origins = {}
+let origins = []
 var markers = new L.featureGroup([]);
 
 
@@ -15,8 +15,8 @@ myLocButton.addEventListener('click', (e)=>{
   navigator.geolocation.getCurrentPosition((position) => {
     myLat = position.coords.latitude
     myLon = position.coords.longitude
-    origins.myLoc = [myLat,myLon]
-    placePin(origins.myLoc, "<button>beep</button>")
+    origins.push([myLat,myLon])
+    placePin([myLat,myLon], "<button>beep</button>")
     mymap.setView([position.coords.latitude, position.coords.longitude], 15); })
 
 })
@@ -37,6 +37,8 @@ function getPlaceFromAddress(addressString) {
 
 }
 
+// broken for the current location
+// fix params or something
 
 function placePin(json) {
   coordsArray = [json[0].lat, json[0].lon]
@@ -56,15 +58,12 @@ function addOriginIcon(json, marker) {
   originPointsContainer.append(newOriginPoint)
 
   newOriginPoint.addEventListener('click', (e)=>{
-    markers.removeLayer(marker)
-    marker.remove()
-    newOriginPoint.remove()
+    markers.removeLayer(marker);
+    marker.remove();
+    newOriginPoint.remove();
   })
 }
-
-
-
-
+]
 
 var mymap = L.map('mapid').setView([40.704769000000006, -74.0132667], 15);
 
