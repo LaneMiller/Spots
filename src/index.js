@@ -130,14 +130,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function buttonHandler(event) {
       if (event.target.tagName === 'BUTTON' && averagePin) {
         const avgPoint = [averagePin._latlng.lat, averagePin._latlng.lng];
-        const categories = fetchOperations.fetchCategory(event.target.dataset.id).then(data => {
-          const shortest = shortestDistance(data.locations, avgPoint);
-          fetchOperations.fetchLocation(shortest[1].id).then(data => {categoryDiv.innerHTML += addShortestHTML(data)})
+        const categories = fetchOperations.fetchCategory(event.target.dataset.id).then(data => getClosestSite(data, avgPoint));
+      }
+    }
 
-          function addShortestHTML(data) {
-            return `<h3>Nearest location: ${data.name}, Distance: ${shortest[0]}</h3>`
-          }
-        });
+    function getClosestSite(data, avgPoint) {
+      const shortest = shortestDistance(data.locations, avgPoint);
+      fetchOperations.fetchLocation(shortest[1].id).then(data => {categoryDiv.innerHTML += addShortestHTML(data)})
+
+      function addShortestHTML(data) {
+        return `<h3>Nearest location: ${data.name}, Distance: ${shortest[0]}</h3>`
       }
     }
 
