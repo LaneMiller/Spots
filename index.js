@@ -9,40 +9,44 @@ let myLon
 let origins = []
 var markers = new L.featureGroup([]);
 
-
+//Gets current location of user by Lat and Lon
 myLocButton.addEventListener('click', (e)=>{
-  // get lat and lon of user
   navigator.geolocation.getCurrentPosition((position) => {
     myLat = position.coords.latitude
     myLon = position.coords.longitude
-    origins.push([myLat,myLon])
+    origins.push( [myLat,myLon] )
     placePin([myLat,myLon], "<button>beep</button>")
-    mymap.setView([position.coords.latitude, position.coords.longitude], 15); })
+    mymap.setView([myLat, myLon], 15); })
 
 })
 
+//adds address and area search functionality and sets map bounds to show all current markers
 myAddressSearchBox.addEventListener('keydown', (e)=>{
   if (e.key === 'Enter'){
     const addressQuery = e.target.value
-    const myMapBoundries = mymap.getBounds()
-     const uri = `https://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=${encodeURIComponent(addressQuery)}&countrycodes=us&viewbox=${mymap.getBounds()._northEast.lat},${mymap.getBounds()._northEast.lng},${mymap.getBounds()._southWest.lat},${mymap.getBounds()._southWest.lng}&format=json&limit=1`
+    const myMapBoundries = mymap.getBounds() // is this line necessary? <!>
+    const uri = `https://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=${encodeURIComponent(addressQuery)}&countrycodes=us&viewbox=${mymap.getBounds()._northEast.lat},${mymap.getBounds()._northEast.lng},${mymap.getBounds()._southWest.lat},${mymap.getBounds()._southWest.lng}&format=json&limit=1`
 
-     fetch(uri).then(json=>json.json()).then(json=>placePin(json));
+    fetch(uri).then(json=>json.json()).then(json=>placePin([json[0].lat, json[0].lon], json[0].address.postcode)).then(e.target.value = '').catch(alert("not found"))
 
   };
 })
 
 
 function getPlaceFromAddress(addressString) {
-
+  //What are we doing here?
 }
 
-// broken for the current location
-// fix params or something
+//Places pin/marker on map for given coords
+function placePin(coordsArray, postcode) {
+  // coordsArray = [json[0].lat, json[0].lon]
 
-function placePin(json) {
-  coordsArray = [json[0].lat, json[0].lon]
-  popuptext = json[0].address.postcode
+  if (postcode) {
+    popuptext = postcode
+  } else {
+    popuptext = "My Location"
+  }
+  debugger
   let newMarker = new L.marker(coordsArray).addTo(mymap);
   newMarker.addTo(markers)
   newMarker.bindPopup(`${popuptext}`);
