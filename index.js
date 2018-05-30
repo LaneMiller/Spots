@@ -15,7 +15,7 @@ myLocButton.addEventListener('click', (e)=>{
     myLat = position.coords.latitude
     myLon = position.coords.longitude
     origins.push( [myLat,myLon] )
-    placePin([myLat,myLon], "<button>beep</button>")
+    placePin([myLat,myLon])
     mymap.setView([myLat, myLon], 15); })
 
 })
@@ -27,7 +27,7 @@ myAddressSearchBox.addEventListener('keydown', (e)=>{
     const myMapBoundries = mymap.getBounds() // is this line necessary? <!>
     const uri = `https://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=${encodeURIComponent(addressQuery)}&countrycodes=us&viewbox=${mymap.getBounds()._northEast.lat},${mymap.getBounds()._northEast.lng},${mymap.getBounds()._southWest.lat},${mymap.getBounds()._southWest.lng}&format=json&limit=1`
 
-    fetch(uri).then(json=>json.json()).then(json=>placePin([json[0].lat, json[0].lon], json[0].address.postcode)).then(e.target.value = '').catch(alert("not found"))
+    fetch(uri).then(json=>json.json()).then(json=>placePin([json[0].lat, json[0].lon], json[0].address.postcode)).then(e.target.value = '')
 
   };
 })
@@ -37,28 +37,27 @@ function getPlaceFromAddress(addressString) {
   //What are we doing here?
 }
 
-//Places pin/marker on map for given coords
-function placePin(coordsArray, postcode) {
-  // coordsArray = [json[0].lat, json[0].lon]
-
-  if (postcode) {
-    popuptext = postcode
+//Places pin/marker on map for given coords, passes popuptext to addOriginIcon()
+function placePin(coordsArray, spotText) {
+  if (spotText) {
+    popuptext = spotText
   } else {
-    popuptext = "My Location"
+    popuptext = "MyLocation"
   }
-  debugger
+
   let newMarker = new L.marker(coordsArray).addTo(mymap);
   newMarker.addTo(markers)
   newMarker.bindPopup(`${popuptext}`);
   mymap.fitBounds(markers.getBounds())
-  addOriginIcon(json, newMarker)
+  addOriginIcon(popuptext, newMarker)
 }
 
-function addOriginIcon(json, marker) {
+//Creates div and "Spot" icon for given user input
+function addOriginIcon(popuptext, marker) {
   const newOriginPoint = document.createElement('div')
   const originPointsContainer = document.getElementById('origin-points-icons')
   newOriginPoint.setAttribute('id',`originMarker-${marker._leaflet_id}`)
-  newOriginPoint.innerHTML = `<p>${json[0].address.postcode}</p>`
+  newOriginPoint.innerHTML = `<p>${popuptext}</p>`
   originPointsContainer.append(newOriginPoint)
 
   newOriginPoint.addEventListener('click', (e)=>{
@@ -70,8 +69,7 @@ function addOriginIcon(json, marker) {
 
 
 
-
-
+// Sets up map field
 var mymap = L.map('mapid').setView([40.704769000000006, -74.0132667], 15);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
