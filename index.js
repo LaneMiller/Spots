@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
-const myLocButton = document.getElementById('my-location-button')
-const myAddressSearchBox = document.getElementById('primary-input')
+const myLocButton = document.getElementById('my-location-button');
+const myAddressSearchBox = document.getElementById('primary-input');
+let averagePin;
 
 
 let myLat
@@ -14,7 +15,7 @@ myLocButton.addEventListener('click', (e)=>{
   navigator.geolocation.getCurrentPosition((position) => {
     myLat = position.coords.latitude
     myLon = position.coords.longitude
-    origins.push( [myLat,myLon] )
+    // origins.push( [myLat,myLon] ) this now happens inside of placePin()
     placePin([myLat,myLon])
     mymap.setView([myLat, myLon], 15); })
 
@@ -39,6 +40,7 @@ function getPlaceFromAddress(addressString) {
 
 //Places pin/marker on map for given coords, passes popuptext to addOriginIcon()
 function placePin(coordsArray, spotText) {
+
   if (spotText) {
     popuptext = spotText
   } else {
@@ -50,6 +52,8 @@ function placePin(coordsArray, spotText) {
   newMarker.bindPopup(`${popuptext}`);
   mymap.fitBounds(markers.getBounds())
   addOriginIcon(popuptext, newMarker)
+  origins.push(coordsArray)
+  findAverage(origins)
 }
 
 //Creates div and "Spot" icon for given user input
@@ -61,10 +65,25 @@ function addOriginIcon(popuptext, marker) {
   originPointsContainer.append(newOriginPoint)
 
   newOriginPoint.addEventListener('click', (e)=>{
+    debugger
+    console.log(origins);
     markers.removeLayer(marker);
     marker.remove();
     newOriginPoint.remove();
   })
+}
+
+function findAverage(coordinates) {
+  const lats = coordinates.map(coord => parseFloat(coord[0]));
+  const lons = coordinates.map(coord => parseFloat(coord[1]));
+
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+  const newLat = lats.reduce(reducer) / lats.length
+  const newLon = lons.reduce(reducer) / lons.length
+  if (averagePin){
+    averagePin.remove()
+  }
+   averagePin = new L.marker([newLat, newLon]).addTo(mymap);
 }
 
 
