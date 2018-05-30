@@ -80,4 +80,82 @@ L.tileLayer(`https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=$
   id: 'mapbox.streets'
 }).addTo(mymap);
 // L.Control.geocoder().addTo(mymap);
+
+///////////////////////////////////////////////////////////////
+// tesing backend
+  const categoryDiv = document.getElementById('category');
+
+  function fetchCategory() {
+    fetchOperations.fetchCategories().then(displayCategories);
+  }
+
+  function displayCategories(categories) {
+    categories.forEach(category => {categoryDiv.innerHTML += addCategoryHTML(category)});
+  }
+
+  function addCategoryHTML(category) {
+    return `<button data-id='${category.id}'>${category.name}</button>`;
+  }
+
+  function addCategoryListener() {
+    categoryDiv.addEventListener('click', buttonHandler);
+  }
+
+  const testPoint = [40.706865, -74.011318];
+
+  function buttonHandler(event) {
+    if (event.target.tagName === 'BUTTON') {
+      const categories = fetchOperations.fetchCategory(event.target.dataset.id).then(data => {
+        const shortest = shortestDistance(data.locations, testPoint);
+        fetchOperations.fetchLocation(shortest[1].id).then(data => {categoryDiv.innerHTML += addShortestHTML(data)})
+
+        function addShortestHTML(data) {
+          return `<h3>Nearest location: ${data.name}, Distance: ${shortest[0]}</h3>`
+        }
+      });
+    }
+  }
+
+  fetchCategory();
+  addCategoryListener();
 })
+
+function shortestDistance(locations, testPoint) {
+  const array  = locations.map(location => distanceCalc(parseFloat(location.x_lon), testPoint[0], parseFloat(location.y_lat), testPoint[1]))
+  const  shortest =  [...array].sort()[0];
+  return [shortest, locations[array.indexOf(shortest)]];
+}
+
+function distanceCalc(x1, x2, y1, y2) {
+  return Math.sqrt((x2 - x1)**2 +  (y2 - y1)**2);
+}
+
+const fetchOperations = {
+  locationUrl: "http://localhost:3000/api/v1/locations/",
+  categoryUrl: "http://localhost:3000/api/v1/categories/",
+  parseJson: function(response) {
+    return response.json();
+  },
+  fetchCategories: function() {
+    return fetch(this.categoryUrl).then(this.parseJson);
+  },
+  fetchCategory: function(id) {
+    return fetch(`${this.categoryUrl}/${id}`).then(this.parseJson);
+  },
+  fetchLocations: function() {
+    return fetch(this.locationUrl).then(this.parseJson);
+  },
+  fetchLocation: function(id) {
+    return fetch(`${this.locationUrl}/${id}`).then(this.parseJson);
+  }
+  /*
+  headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+  generateConfig: function(method,body) {
+    return {
+      method: method,
+      headers: this.headers
+      body: JSON.stringify(body)
+    }
+  }
+  */
+}
