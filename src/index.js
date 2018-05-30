@@ -4,6 +4,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let averagePin;
   let markers = new L.featureGroup([]);
 
+  var IconOrigin = L.Icon.extend({
+    options: {
+    iconUrl: 'img/orig_1.png',
+    // shadowUrl: 'leaf-shadow.png',
+
+    iconSize:     [44, 50], // size of the icon
+    // shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 48], // point of the icon which will correspond to marker's location
+    // shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [0, -45] // point from which the popup should open relative to the iconAnchor
+}});
+
+var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
+    origin2 = new IconOrigin({iconUrl: 'img/orig_2.png'}),
+    origin3 = new IconOrigin({iconUrl: 'img/orig_3.png'});
+    origin4 = new IconOrigin({iconUrl: 'img/orig_4.png'});
+    origin5 = new IconOrigin({iconUrl: 'img/orig_5.png'});
+    origin6 = new IconOrigin({iconUrl: 'img/orig_6.png'});
+    originX = new IconOrigin({iconUrl: 'img/orig_x.png'});
+
   let myLat
   let myLon
   let origins = {}
@@ -37,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   //Places pin/marker on map for given coords, passes popuptext to addOriginIcon()
   function placePin(coordsArray, address) {
-
+    let popuptext;
     if (address) {
       popuptext = address
     } else {
@@ -45,7 +65,30 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
     if (!origins[popuptext]) {
-      let newMarker = new L.marker(coordsArray).addTo(mymap);
+      let newMarker
+      switch (Object.keys(origins).length) {
+        case 0:
+          newMarker = new L.marker(coordsArray, {icon: origin1}).addTo(mymap);
+          break;
+        case 1:
+          newMarker = new L.marker(coordsArray, {icon: origin2}).addTo(mymap);
+          break;
+        case 2:
+          newMarker = new L.marker(coordsArray, {icon: origin3}).addTo(mymap);
+          break;
+        case 3:
+          newMarker = new L.marker(coordsArray, {icon: origin4}).addTo(mymap);
+          break;
+        case 4:
+          newMarker = new L.marker(coordsArray, {icon: origin5}).addTo(mymap);
+          break;
+        case 5:
+          newMarker = new L.marker(coordsArray, {icon: origin6}).addTo(mymap);
+          break;
+        default:
+          newMarker = new L.marker(coordsArray, {icon: originX}).addTo(mymap);
+          break;
+      }
       newMarker.addTo(markers)
       newMarker.bindPopup(`${popuptext}`);
       mymap.fitBounds(markers.getBounds())
@@ -53,6 +96,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
       origins[popuptext] = coordsArray
       findAverage(origins)
     }
+  }
+
+  function placeDestPin(coordsArray, popuptext){
+      let newMarker = new L.marker(coordsArray).addTo(mymap)
+      newMarker.bindPopup(`${popuptext}`);
   }
 
   //Creates div and "Spot" icon for given user input
@@ -84,10 +132,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       if (averagePin) {
         averagePin.remove()
-      }
+      } else if (Object.keys(origins).length > 1){
       averagePin = new L.marker([newLat, newLon]).addTo(mymap);
       averagePin.bindPopup(`Average Point`);
     }
+  }
     else {
       averagePin.remove()
       averagePin = undefined;
@@ -130,16 +179,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function buttonHandler(event) {
       if (event.target.tagName === 'BUTTON' && averagePin) {
         const avgPoint = [averagePin._latlng.lat, averagePin._latlng.lng];
-        const categories = fetchOperations.fetchCategory(event.target.dataset.id).then(data => getClosestSite(data, avgPoint));
-      }
-    }
+        const categories = fetchOperations.fetchCategory(event.target.dataset.id).then(data => {
+          const shortest = shortestDistance(data.locations, avgPoint);
+          fetchOperations.fetchLocation(shortest[1].id).then(data => {console.log(origins);console.log(averagePin); placeDestPin([parseFloat(data.x_lon), parseFloat(data.y_lat)], data.name)})
+          //categoryDiv.innerHTML += addShortestHTML(data)
 
-    function getClosestSite(data, avgPoint) {
-      const shortest = shortestDistance(data.locations, avgPoint);
-      fetchOperations.fetchLocation(shortest[1].id).then(data => {categoryDiv.innerHTML += addShortestHTML(data)})
-
-      function addShortestHTML(data) {
-        return `<h3>Nearest location: ${data.name}, Distance: ${shortest[0]}</h3>`
+          function addShortestHTML(data) {
+            return `<h3>Nearest location: ${data.name}, Distance: ${shortest[0]}</h3>`
+          }
+        });
       }
     }
 
