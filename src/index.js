@@ -222,6 +222,16 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       return Math.sqrt((x2 - x1)**2 +  (y2 - y1)**2);
     }
 
+    // turn on overlay once the page is load
+    (function on() {
+        document.getElementById("overlay").style.display = "block";
+    })();
+
+    // turn off overlay on click
+    document.getElementById("overlay").addEventListener('click', function(event) {
+      event.currentTarget.style.display = "none";
+    })
+
     fetchCategory();
     addCategoryListener();
   }) // End of DOMContentLoaded event
