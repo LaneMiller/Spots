@@ -133,17 +133,7 @@ body {
     cursor: pointer; /* Add a pointer on hover */
 }
 
-#text{
-    position: fixed;
-    top: 60%;
-    left: 50%;
-    font-size: 40px;
-    color: rgba(255, 255, 255);;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-}
-
-#text1{
+#step1{
     position: fixed;
     top: 23%;
     left: 50%;
@@ -153,9 +143,9 @@ body {
     -ms-transform: translate(-50%,-50%);
 }
 
-#text2{
+#step2{
     position: fixed;
-    top: 33%;
+    top: 36%;
     left: 50%;
     font-size: 20px;
     color: rgba(255, 255, 255);;
@@ -163,11 +153,21 @@ body {
     -ms-transform: translate(-50%,-50%);
 }
 
-#text3{
+#step3{
     position: fixed;
-    top: 38%;
+    top: 46%;
     left: 50%;
     font-size: 20px;
+    color: rgba(255, 255, 255);;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+#text{
+    position: fixed;
+    top: 62%;
+    left: 50%;
+    font-size: 45px;
     color: rgba(255, 255, 255);;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
