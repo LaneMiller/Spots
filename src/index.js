@@ -178,6 +178,11 @@ const origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
 
     function displayCategories(categories) {
       categories.forEach(category => {categoryDiv.innerHTML += addCategoryHTML(category)});
+      const addNewDestCat = document.createElement('button')
+      addNewDestCat.setAttribute('id', 'addNewDestCatButton')
+      addNewDestCat.innerHTML = '+'
+      categoryDiv.append(addNewDestCat)
+
     }
 
     function addCategoryHTML(category) {
@@ -189,7 +194,7 @@ const origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     }
 
     function buttonHandler(event) {
-      if (event.target.tagName === 'BUTTON' && averagePin) {
+      if (event.target.tagName === 'BUTTON' && averagePin && event.target.id !== 'addNewDestCatButton') {
         const avgPoint = [averagePin._latlng.lat, averagePin._latlng.lng];
         const categories = fetchOperations.fetchCategory(event.target.dataset.id).then(data => {
           const shortest = shortestDistance(data.locations, avgPoint);
@@ -200,7 +205,16 @@ const origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
             return `<h3>Nearest location: ${data.name}, Distance: ${shortest[0]}</h3>`
           }
         });
+      } else if (event.target.id === 'addNewDestCatButton'){
+        document.getElementById("crud-form").style.display = "block";
+        fetchCategoriesForSelect();
+        buildNewDestForm()
       }
+    }
+
+    function buildNewDestForm() {
+
+
     }
 
     function shortestDistance(locations, avgPoint) {
@@ -211,6 +225,24 @@ const origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
 
     function distanceCalc(x1, x2, y1, y2) {
       return Math.sqrt((x2 - x1)**2 +  (y2 - y1)**2);
+    }
+
+    // for adding a new destination category button
+    const select = document.getElementById("crud-category-selector");
+
+    // fetch all existing categories from database and add to dropdown select
+    function fetchCategoriesForSelect() {
+      fetchOperations.fetchCategories().then(forEachCategory);
+    }
+
+    function forEachCategory(categories) {
+      categories.forEach(addOptionToSelect)
+    }
+
+    function addOptionToSelect(category) {
+      const option = document.createElement('option');
+      option.text = category.name
+      select.add(option)
     }
 
     // turn on overlay once the page is load
