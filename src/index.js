@@ -215,8 +215,13 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     }
 
     function buildNewDestForm() {
-
-
+      const newLocationTextField = document.getElementById('newDestInputField')
+      newLocationTextField.addEventListener('keydown', (e)=>{
+        if (e.key === 'Enter'){
+          const newDestQuery = e.target.value
+          fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=zoo&key=${googleKey}`, {mode: 'no-cors' }).then(resp=>{console.log(resp)})
+        }
+      })
     }
 
     function shortestDistance(locations, avgPoint) {
