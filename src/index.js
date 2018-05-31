@@ -1,19 +1,22 @@
 document.addEventListener("DOMContentLoaded", function(event) {
+
+  //// variable declarations
   const myLocButton = document.getElementById('my-location-button');
   const myAddressSearchBox = document.getElementById('primary-input');
   let averagePin;
   let originPins = []
   let markers = new L.featureGroup([]);
 
+  let myLat
+  let myLon
+  let origins = {}
+  let previous_destination
+
   var IconOrigin = L.Icon.extend({
     options: {
     iconUrl: 'img/orig_1.png',
-    // shadowUrl: 'leaf-shadow.png',
-
     iconSize:     [44, 50], // size of the icon
-    // shadowSize:   [50, 64], // size of the shadow
     iconAnchor:   [22, 48], // point of the icon which will correspond to marker's location
-    // shadowAnchor: [4, 62],  // the same for the shadow
     popupAnchor:  [0, -45] // point from which the popup should open relative to the iconAnchor
 }});
 
@@ -27,19 +30,14 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     dest = new IconOrigin({iconUrl: 'img/dest.png', iconSize: [75,75], iconAnchor: [37, 70], popupAnchor:  [0, -70]});
     avg = new IconOrigin({iconUrl: 'img/avg.png', iconSize: [40,40], iconAnchor: [22, 48], popupAnchor:  [0, -45]})
 
-  let myLat
-  let myLon
-  let origins = {}
-  let previous_destination
+
 
   //Gets current location of user by Lat and Lon
   myLocButton.addEventListener('click', (e)=>{
     navigator.geolocation.getCurrentPosition((position) => {
       myLat = position.coords.latitude
       myLon = position.coords.longitude
-      // origins.push( [myLat,myLon] ) this now happens inside of placePin()
       placePin([myLat,myLon])
-      // mymap.setView([myLat, myLon], 15);
     })
   })
 
@@ -47,7 +45,6 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
   myAddressSearchBox.addEventListener('keydown', (e)=>{
     if (e.key === 'Enter'){
       const addressQuery = e.target.value
-      // const myMapBoundries = mymap.getBounds() // is this line necessary? <!>
       const uri = `https://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=${encodeURIComponent(addressQuery)}&countrycodes=us&viewbox=${mymap.getBounds()._northEast.lat},${mymap.getBounds()._northEast.lng},${mymap.getBounds()._southWest.lat},${mymap.getBounds()._southWest.lng}&format=json&limit=1`
       fetch(uri).then(json=>json.json()).then(json => {
         if (json.length === 0) {
@@ -59,10 +56,6 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     };
   })
 
-
-  function getPlaceFromAddress(addressString) {
-    //What are we doing here?
-  }
 
   //Places pin/marker on map for given coords, passes popuptext to addOriginIcon()
   function placePin(coordsArray, address) {
@@ -108,6 +101,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     }
   }
 
+  // places 'THE SPOT' pin
   function placeDestPin(coordsArray, popuptext){
       if (previous_destination){
         previous_destination.remove()
@@ -118,7 +112,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       findAverage(origins)
   }
 
-  //Creates div and "Spot" icon for given user input
+  //Creates div and "Origin" icon for given user input
   function addOriginIcon(popuptext, marker) {
     const newOriginPoint = document.createElement('div')
     const originPointsContainer = document.getElementById('origin-points-icons')
@@ -135,6 +129,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     })
   }
 
+  // calculates average point of all origins and places a pin
   function findAverage(coordinatesObj) {
     if (Object.keys(coordinatesObj).length !== 0) {
       const coordinates = Object.values(coordinatesObj)
@@ -156,7 +151,6 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     }
   }
     else {
-      debugger
       averagePin.remove()
       averagePin = undefined;
     }
@@ -173,10 +167,9 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     id: 'mapbox.streets'
   }).addTo(mymap);
-  // L.Control.geocoder().addTo(mymap);
 
   ///////////////////////////////////////////////////////////////
-  // tesing backend
+  // backend
     const categoryDiv = document.getElementById('category');
 
     function fetchCategory() {
