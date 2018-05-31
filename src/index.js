@@ -105,7 +105,6 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       addOriginIcon(popuptext, newMarker)
       origins[popuptext] = coordsArray
       findAverage(origins)
-      debugger
     }
   }
 
