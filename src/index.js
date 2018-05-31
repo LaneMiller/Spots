@@ -229,12 +229,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function buildNewDestForm() {
       const newLocationTextField = document.getElementById('newDestInputField')
       newLocationTextField.addEventListener('keydown', (e)=>{
-        if (e.key === 'Enter'){
+        if (e.key === 'Enter') {
           const newDestQuery = e.target.value
-          fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=zoo&key=${googleKey}`, {mode: 'no-cors' }).then(resp=>{console.log(resp)})
+          fetch(`http://localhost:3000/api/v1/search/${newDestQuery}`).then(json=>json.json() ).then(json=>console.log(json) )
         }
+
       })
     }
+
+    // function buildGoogleDestList(listOfDests) {
+    //
+    //   for (const dest of listOfDests){
+    //     // const newDestForList
+    //   }
+    //
+    // }
+
+
 
     function shortestDistance(locations, avgPoint) {
       const array  = locations.map(location => distanceCalc(parseFloat(location.x_lon), avgPoint[0], parseFloat(location.y_lat), avgPoint[1]))
