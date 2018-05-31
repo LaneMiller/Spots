@@ -47,8 +47,13 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       const addressQuery = e.target.value
       // const myMapBoundries = mymap.getBounds() // is this line necessary? <!>
       const uri = `https://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=${encodeURIComponent(addressQuery)}&countrycodes=us&viewbox=${mymap.getBounds()._northEast.lat},${mymap.getBounds()._northEast.lng},${mymap.getBounds()._southWest.lat},${mymap.getBounds()._southWest.lng}&format=json&limit=1`
-
-      fetch(uri).then(json=>json.json()).then(json=>placePin([parseFloat(json[0].lat), parseFloat(json[0].lon)], addressQuery)).then(e.target.value = '')
+      fetch(uri).then(json=>json.json()).then(json => {
+        if (json.length === 0) {
+          alert("Please enter a valid address");
+        } else {
+          placePin([parseFloat(json[0].lat), parseFloat(json[0].lon)], addressQuery)
+        }
+      }).then(e.target.value = '')
     };
   })
 
