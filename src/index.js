@@ -23,6 +23,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     origin5 = new IconOrigin({iconUrl: 'img/orig_5.png'});
     origin6 = new IconOrigin({iconUrl: 'img/orig_6.png'});
     originX = new IconOrigin({iconUrl: 'img/orig_x.png'});
+    dest = new IconOrigin({iconUrl: 'img/dest.png', iconSize: [75,75], iconAnchor: [37, 70], popupAnchor:  [0, -70]});
 
   let myLat
   let myLon
@@ -99,7 +100,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
   }
 
   function placeDestPin(coordsArray, popuptext){
-      let newMarker = new L.marker(coordsArray).addTo(mymap)
+      let newMarker = new L.marker(coordsArray, {icon: dest}).addTo(mymap)
       newMarker.bindPopup(`${popuptext}`);
   }
 
@@ -181,7 +182,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
         const avgPoint = [averagePin._latlng.lat, averagePin._latlng.lng];
         const categories = fetchOperations.fetchCategory(event.target.dataset.id).then(data => {
           const shortest = shortestDistance(data.locations, avgPoint);
-          fetchOperations.fetchLocation(shortest[1].id).then(data => {console.log(origins);console.log(averagePin); placeDestPin([parseFloat(data.x_lon), parseFloat(data.y_lat)], data.name)})
+          fetchOperations.fetchLocation(shortest[1].id).then(data => { placeDestPin([parseFloat(data.x_lon), parseFloat(data.y_lat)], data.name)})
           //categoryDiv.innerHTML += addShortestHTML(data)
 
           function addShortestHTML(data) {
