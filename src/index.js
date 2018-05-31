@@ -209,6 +209,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
         });
       } else if (event.target.id === 'addNewDestCatButton'){
         document.getElementById("crud-form").style.display = "block";
+        fetchCategoriesForSelect();
         buildNewDestForm()
       }
     }
@@ -228,6 +229,24 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       return Math.sqrt((x2 - x1)**2 +  (y2 - y1)**2);
     }
 
+    // for adding a new destination category button
+    const select = document.getElementById("crud-category-selector");
+
+    // fetch all existing categories from database and add to dropdown select
+    function fetchCategoriesForSelect() {
+      fetchOperations.fetchCategories().then(forEachCategory);
+    }
+
+    function forEachCategory(categories) {
+      categories.forEach(addOptionToSelect)
+    }
+
+    function addOptionToSelect(category) {
+      const option = document.createElement('option');
+      option.text = category.name
+      select.add(option)
+    }
+
     // turn on overlay once the page is load
     (function on() {
         document.getElementById("overlay").style.display = "block";
@@ -237,8 +256,6 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     document.getElementById("overlay").addEventListener('click', function(event) {
       event.currentTarget.style.display = "none";
     })
-
-
 
     fetchCategory();
     addCategoryListener();
