@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const myLocButton = document.getElementById('my-location-button');
   const myAddressSearchBox = document.getElementById('primary-input');
   let averagePin;
+  let originPins = []
   let markers = new L.featureGroup([]);
 
   var IconOrigin = L.Icon.extend({
@@ -24,10 +25,12 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     origin6 = new IconOrigin({iconUrl: 'img/orig_6.png'});
     originX = new IconOrigin({iconUrl: 'img/orig_x.png'});
     dest = new IconOrigin({iconUrl: 'img/dest.png', iconSize: [75,75], iconAnchor: [37, 70], popupAnchor:  [0, -70]});
+    avg = new IconOrigin({iconUrl: 'img/avg.png', iconSize: [40,40], iconAnchor: [22, 48], popupAnchor:  [0, -45]})
 
   let myLat
   let myLon
   let origins = {}
+  let previous_destination
 
   //Gets current location of user by Lat and Lon
   myLocButton.addEventListener('click', (e)=>{
@@ -46,8 +49,13 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       const addressQuery = e.target.value
       // const myMapBoundries = mymap.getBounds() // is this line necessary? <!>
       const uri = `https://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=${encodeURIComponent(addressQuery)}&countrycodes=us&viewbox=${mymap.getBounds()._northEast.lat},${mymap.getBounds()._northEast.lng},${mymap.getBounds()._southWest.lat},${mymap.getBounds()._southWest.lng}&format=json&limit=1`
-
-      fetch(uri).then(json=>json.json()).then(json=>placePin([parseFloat(json[0].lat), parseFloat(json[0].lon)], addressQuery)).then(e.target.value = '')
+      fetch(uri).then(json=>json.json()).then(json => {
+        if (json.length === 0) {
+          alert("Please enter a valid address");
+        } else {
+          placePin([parseFloat(json[0].lat), parseFloat(json[0].lon)], addressQuery)
+        }
+      }).then(e.target.value = '')
     };
   })
 
@@ -92,6 +100,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       }
       newMarker.addTo(markers)
       newMarker.bindPopup(`${popuptext}`);
+      originPins.push(newMarker)
       mymap.fitBounds(markers.getBounds())
       addOriginIcon(popuptext, newMarker)
       origins[popuptext] = coordsArray
@@ -100,8 +109,13 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
   }
 
   function placeDestPin(coordsArray, popuptext){
+      if (previous_destination){
+        previous_destination.remove()
+      }
       let newMarker = new L.marker(coordsArray, {icon: dest}).addTo(mymap)
-      newMarker.bindPopup(`${popuptext}`);
+      newMarker.bindPopup(`${popuptext}`).openPopup();
+      previous_destination = newMarker
+      findAverage(origins)
   }
 
   //Creates div and "Spot" icon for given user input
@@ -131,14 +145,18 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       const newLat = lats.reduce(reducer) / lats.length
       const newLon = lons.reduce(reducer) / lons.length
 
+
       if (averagePin) {
         averagePin.remove()
-      } else if (Object.keys(origins).length > 1){
-      averagePin = new L.marker([newLat, newLon]).addTo(mymap);
+      }
+
+      if (Object.keys(origins).length > 1){
+      averagePin = new L.marker([newLat, newLon], {icon: avg}).addTo(mymap);
       averagePin.bindPopup(`Average Point`);
     }
   }
     else {
+      debugger
       averagePin.remove()
       averagePin = undefined;
     }
