@@ -12,23 +12,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let origins = {}
   let previous_destination
 
-  var IconOrigin = L.Icon.extend({
+  const IconOrigin = L.Icon.extend({
     options: {
     iconUrl: 'img/orig_1.png',
     iconSize:     [44, 50], // size of the icon
     iconAnchor:   [22, 48], // point of the icon which will correspond to marker's location
     popupAnchor:  [0, -45] // point from which the popup should open relative to the iconAnchor
-}});
+  }});
 
-var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
-    origin2 = new IconOrigin({iconUrl: 'img/orig_2.png'}),
-    origin3 = new IconOrigin({iconUrl: 'img/orig_3.png'});
-    origin4 = new IconOrigin({iconUrl: 'img/orig_4.png'});
-    origin5 = new IconOrigin({iconUrl: 'img/orig_5.png'});
-    origin6 = new IconOrigin({iconUrl: 'img/orig_6.png'});
-    originX = new IconOrigin({iconUrl: 'img/orig_x.png'});
-    dest = new IconOrigin({iconUrl: 'img/dest.png', iconSize: [75,75], iconAnchor: [37, 70], popupAnchor:  [0, -70]});
-    avg = new IconOrigin({iconUrl: 'img/avg.png', iconSize: [40,40], iconAnchor: [22, 48], popupAnchor:  [0, -45]})
+  const origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
+      origin2 = new IconOrigin({iconUrl: 'img/orig_2.png'}),
+      origin3 = new IconOrigin({iconUrl: 'img/orig_3.png'}),
+      origin4 = new IconOrigin({iconUrl: 'img/orig_4.png'}),
+      origin5 = new IconOrigin({iconUrl: 'img/orig_5.png'}),
+      origin6 = new IconOrigin({iconUrl: 'img/orig_6.png'}),
+      originX = new IconOrigin({iconUrl: 'img/orig_x.png'}),
+      dest = new IconOrigin({iconUrl: 'img/dest.png', iconSize: [75,75], iconAnchor: [37, 70], popupAnchor:  [0, -70]}),
+      avg = new IconOrigin({iconUrl: 'img/avg.png', iconSize: [40,40], iconAnchor: [22, 48], popupAnchor:  [0, -45]});
 
 
 
@@ -67,7 +67,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     }
 
     if (!origins[popuptext]) {
-      let newMarker
+      let newMarker;
       switch (Object.keys(origins).length) {
         case 0:
           newMarker = new L.marker(coordsArray, {icon: origin1}).addTo(mymap);
@@ -120,11 +120,26 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     newOriginPoint.innerHTML = `<p>${popuptext}</p>`
     originPointsContainer.append(newOriginPoint)
 
-    newOriginPoint.addEventListener('click', (e)=>{
+    deleteOriginIcon(newOriginPoint, marker)
+  }
+
+  function deleteOriginIcon(OriginIcon, marker) {
+    OriginIcon.addEventListener('click', (e)=>{
       delete origins[marker._popup._content]
       markers.removeLayer(marker);
       marker.remove();
-      newOriginPoint.remove();
+      let i = 1;
+      for (let key in markers._layers) {
+        console.log(markers._layers[key]);
+        if (i < 7) {
+          markers._layers[key]._icon.src = `img/orig_${i}.png`
+        }
+        else {
+          markers._layers[key]._icon.src = `img/orig_x.png`
+        }
+        i++
+      }
+      OriginIcon.remove();
       findAverage(origins)
     })
   }
@@ -182,13 +197,10 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       addNewDestCat.setAttribute('id', 'addNewDestCatButton')
       addNewDestCat.innerHTML = '+'
       categoryDiv.append(addNewDestCat)
-
     }
 
     function addCategoryHTML(category) {
-      const categoryName = category.name.split(' ').join(`<br>`)
-      console.log(categoryName);
-      return `<button data-id='${category.id}'>${categoryName}</button>`;
+      return `<button data-id='${category.id}'>${category.name}</button>`;
     }
 
     function addCategoryListener() {
@@ -209,6 +221,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
         });
       } else if (event.target.id === 'addNewDestCatButton'){
         document.getElementById("crud-form").style.display = "block";
+        fetchCategoriesForSelect();
         buildNewDestForm()
       }
     }
@@ -244,6 +257,24 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       return Math.sqrt((x2 - x1)**2 +  (y2 - y1)**2);
     }
 
+    // for adding a new destination category button
+    const select = document.getElementById("crud-category-selector");
+
+    // fetch all existing categories from database and add to dropdown select
+    function fetchCategoriesForSelect() {
+      fetchOperations.fetchCategories().then(forEachCategory);
+    }
+
+    function forEachCategory(categories) {
+      categories.forEach(addOptionToSelect)
+    }
+
+    function addOptionToSelect(category) {
+      const option = document.createElement('option');
+      option.text = category.name
+      select.add(option)
+    }
+
     // turn on overlay once the page is load
     (function on() {
         document.getElementById("overlay").style.display = "block";
@@ -253,8 +284,6 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     document.getElementById("overlay").addEventListener('click', function(event) {
       event.currentTarget.style.display = "none";
     })
-
-
 
     fetchCategory();
     addCategoryListener();
