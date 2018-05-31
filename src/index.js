@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const myLocButton = document.getElementById('my-location-button');
   const myAddressSearchBox = document.getElementById('primary-input');
   let averagePin;
+  let originPins = []
   let markers = new L.featureGroup([]);
 
   var IconOrigin = L.Icon.extend({
@@ -99,10 +100,12 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       }
       newMarker.addTo(markers)
       newMarker.bindPopup(`${popuptext}`);
+      originPins.push(newMarker)
       mymap.fitBounds(markers.getBounds())
       addOriginIcon(popuptext, newMarker)
       origins[popuptext] = coordsArray
       findAverage(origins)
+      debugger
     }
   }
 
