@@ -28,6 +28,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
   let myLat
   let myLon
   let origins = {}
+  let previous_destination
 
   //Gets current location of user by Lat and Lon
   myLocButton.addEventListener('click', (e)=>{
@@ -100,8 +101,13 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
   }
 
   function placeDestPin(coordsArray, popuptext){
+      if (previous_destination){
+        previous_destination.remove()
+      }
       let newMarker = new L.marker(coordsArray, {icon: dest}).addTo(mymap)
-      newMarker.bindPopup(`${popuptext}`);
+      newMarker.bindPopup(`${popuptext}`).openPopup();
+      previous_destination = newMarker
+      findAverage(origins)
   }
 
   //Creates div and "Spot" icon for given user input
@@ -131,14 +137,18 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       const newLat = lats.reduce(reducer) / lats.length
       const newLon = lons.reduce(reducer) / lons.length
 
+
       if (averagePin) {
         averagePin.remove()
-      } else if (Object.keys(origins).length > 1){
+      }
+
+      if (Object.keys(origins).length > 1){
       averagePin = new L.marker([newLat, newLon]).addTo(mymap);
       averagePin.bindPopup(`Average Point`);
     }
   }
     else {
+      debugger
       averagePin.remove()
       averagePin = undefined;
     }
