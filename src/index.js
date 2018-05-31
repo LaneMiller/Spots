@@ -120,6 +120,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     newOriginPoint.innerHTML = `<p>${popuptext}</p>`
     originPointsContainer.append(newOriginPoint)
 
+    newOriginPoint.addEventListener('mouseover', function(e) {
+      // newOriginPoint.innerHTML += `<style>#origin-points-icons > div {background-image: url(https://vignette.wikia.nocookie.net/creation/images/7/7e/Red_x.png/revision/latest?cb=20160323201834)}</style>`
+    })
+
     deleteOriginIcon(newOriginPoint, marker)
   }
 
@@ -142,6 +146,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       OriginIcon.remove();
       findAverage(origins)
     })
+
+
   }
 
   // calculates average point of all origins and places a pin
