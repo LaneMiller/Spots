@@ -65,6 +65,7 @@ body {
 
 #origin-points-icons > div {
   font: 13px 'Bowlby One SC';
+  outline: none;
   /* vertical-align: middle; */
   position: relative;
   right: 13px;
@@ -86,6 +87,7 @@ body {
 #category > button {
   /* position: relative; */
   font: 18px 'Bowlby One SC';
+  outline: none;
   margin-top: 4em;
   display: inline-block;
   /* border: 3px solid red; */
