@@ -208,10 +208,14 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
           }
         });
       } else if (event.target.id === 'addNewDestCatButton'){
-        debugger
         document.getElementById("crud-form").style.display = "block";
-
+        buildNewDestForm()
       }
+    }
+
+    function buildNewDestForm() {
+
+
     }
 
     function shortestDistance(locations, avgPoint) {
