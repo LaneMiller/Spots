@@ -64,7 +64,7 @@ body {
 }
 
 #origin-points-icons > div {
-  font: 15px 'Ubuntu';
+  font: 13px 'Bowlby One SC';
   /* vertical-align: middle; */
   position: relative;
   right: 13px;
@@ -85,7 +85,7 @@ body {
 
 #category > button {
   /* position: relative; */
-  font: 15px 'Ubuntu';
+  font: 18px 'Bowlby One SC';
   margin-top: 4em;
   display: inline-block;
   /* border: 3px solid red; */
@@ -99,8 +99,8 @@ body {
   right: 18px;
   margin-left: 20px;
   /* margin-top: 5px; */
-  height: 5.5em;
-  width: 5.5em;
+  height: 5em;
+  width: 5em;
   background-color: #ffffd4
 }
 
@@ -131,8 +131,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    background-color: rgba(0,0,0,0.7); /* Black background with opacity */
+    z-index: 999; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
 }
 
@@ -150,11 +150,16 @@ body {
     cursor: pointer; /* Add a pointer on hover */
 }
 
+#overlay .overlay-text {
+  font-family: 'Ubuntu';
+  text-shadow: -1px 0 1px black, 1px 0 1px black, 0 -1px 1px black, 0 1px 1px black;
+}
+
 #step1{
     position: fixed;
     top: 23%;
     left: 50%;
-    font-size: 20px;
+    font-size: 32px;
     color: rgba(255, 255, 255);;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
@@ -162,9 +167,9 @@ body {
 
 #step2{
     position: fixed;
-    top: 36%;
+    top: 40%;
     left: 50%;
-    font-size: 20px;
+    font-size: 32px;
     color: rgba(255, 255, 255);;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
@@ -172,9 +177,9 @@ body {
 
 #step3{
     position: fixed;
-    top: 46%;
+    top: 57%;
     left: 50%;
-    font-size: 20px;
+    font-size: 32px;
     color: rgba(255, 255, 255);;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
@@ -182,7 +187,7 @@ body {
 
 #text{
     position: fixed;
-    top: 62%;
+    top: 72%;
     left: 50%;
     font-size: 45px;
     color: rgba(255, 255, 255);;
