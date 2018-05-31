@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let origins = {}
   let previous_destination
 
-  var IconOrigin = L.Icon.extend({
+  const IconOrigin = L.Icon.extend({
     options: {
     iconUrl: 'img/orig_1.png',
     iconSize:     [44, 50], // size of the icon
@@ -20,15 +20,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     popupAnchor:  [0, -45] // point from which the popup should open relative to the iconAnchor
 }});
 
-var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
+const origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     origin2 = new IconOrigin({iconUrl: 'img/orig_2.png'}),
-    origin3 = new IconOrigin({iconUrl: 'img/orig_3.png'});
-    origin4 = new IconOrigin({iconUrl: 'img/orig_4.png'});
-    origin5 = new IconOrigin({iconUrl: 'img/orig_5.png'});
-    origin6 = new IconOrigin({iconUrl: 'img/orig_6.png'});
-    originX = new IconOrigin({iconUrl: 'img/orig_x.png'});
-    dest = new IconOrigin({iconUrl: 'img/dest.png', iconSize: [75,75], iconAnchor: [37, 70], popupAnchor:  [0, -70]});
-    avg = new IconOrigin({iconUrl: 'img/avg.png', iconSize: [40,40], iconAnchor: [22, 48], popupAnchor:  [0, -45]})
+    origin3 = new IconOrigin({iconUrl: 'img/orig_3.png'}),
+    origin4 = new IconOrigin({iconUrl: 'img/orig_4.png'}),
+    origin5 = new IconOrigin({iconUrl: 'img/orig_5.png'}),
+    origin6 = new IconOrigin({iconUrl: 'img/orig_6.png'}),
+    originX = new IconOrigin({iconUrl: 'img/orig_x.png'}),
+    dest = new IconOrigin({iconUrl: 'img/dest.png', iconSize: [75,75], iconAnchor: [37, 70], popupAnchor:  [0, -70]}),
+    avg = new IconOrigin({iconUrl: 'img/avg.png', iconSize: [40,40], iconAnchor: [22, 48], popupAnchor:  [0, -45]});
 
 
 
@@ -181,9 +181,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     }
 
     function addCategoryHTML(category) {
-      const categoryName = category.name.split(' ').join(`<br>`)
-      console.log(categoryName);
-      return `<button data-id='${category.id}'>${categoryName}</button>`;
+      return `<button data-id='${category.id}'>${category.name}</button>`;
     }
 
     function addCategoryListener() {
