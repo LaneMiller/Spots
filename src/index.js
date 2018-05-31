@@ -178,6 +178,11 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
 
     function displayCategories(categories) {
       categories.forEach(category => {categoryDiv.innerHTML += addCategoryHTML(category)});
+      const addNewDestCat = document.createElement('button')
+      addNewDestCat.setAttribute('id', 'addNewDestCatButton')
+      addNewDestCat.innerHTML = '+'
+      categoryDiv.append(addNewDestCat)
+
     }
 
     function addCategoryHTML(category) {
@@ -191,7 +196,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     }
 
     function buttonHandler(event) {
-      if (event.target.tagName === 'BUTTON' && averagePin) {
+      if (event.target.tagName === 'BUTTON' && averagePin && event.target.id !== 'addNewDestCatButton') {
         const avgPoint = [averagePin._latlng.lat, averagePin._latlng.lng];
         const categories = fetchOperations.fetchCategory(event.target.dataset.id).then(data => {
           const shortest = shortestDistance(data.locations, avgPoint);
@@ -202,6 +207,10 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
             return `<h3>Nearest location: ${data.name}, Distance: ${shortest[0]}</h3>`
           }
         });
+      } else if (event.target.id === 'addNewDestCatButton'){
+        debugger
+        document.getElementById("crud-form").style.display = "block";
+
       }
     }
 
@@ -224,6 +233,8 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     document.getElementById("overlay").addEventListener('click', function(event) {
       event.currentTarget.style.display = "none";
     })
+
+
 
     fetchCategory();
     addCategoryListener();
