@@ -3,14 +3,16 @@ body {
   background-image: url("./assets/imgs/woodpanel.jpg");
   /* background-image: url("./assets/imgs/background.jpg"); */
   /* background-image: linear-gradient(#fee391, #993404, #662506); */
-  background-size: 100%;
+  background-size: 100% 180em;
+  background-repeat: no-repeat;
   width: auto;
 }
 
 .header {
   margin: -18px auto 0;
   font: 6em "Bowlby One SC";
-  color: #fbffd4;
+  color: hsl(66, 85%, 93%);
+  width: auto;
   text-shadow: -5px 6px #993404, -9px 10px #d46611, -12px 13px #cc4c02;
 }
 
@@ -25,7 +27,7 @@ body {
   /* border-radius: 25px; */
   border-radius: 150px;
   border-width: 9px;
-  border-style: solid;
+  border-style: groove ridge ridge groove;
   border-color: #993404;
 }
 
@@ -34,50 +36,73 @@ body {
   margin: -5px;
   padding: 5px;
   border-radius: 50%;
+  /* box-shadow: 2px 0 #ffffd4; */
+  position: relative;
+  border: solid;
+  border-color: #993404;
+  background-image: radial-gradient(hsl(60, 90%, 95%),  hsl(60, 100%, 85%));
+
+  /* background-color: hsl(60, 100%, 95%); */
 }
 
 #primary-input {
   vertical-align: middle;
+  outline: none;
+  margin-left: -10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   height: 20px;
   width: 250px;
-  border-radius: 25px;
+  padding-left: 10px;
+  background-color: hsl(60, 90%, 95%);
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  border-top-left-radius: -20%;
+  border-style: solid;
+  border-color: #993404;
 }
 
 #origin-points-icons > div {
-  /* font: x-small "Bowlby One SC"; */
-  vertical-align: middle;
+  ffont:  18px 'Ubuntu';
+  /* vertical-align: middle; */
   position: relative;
   top: 10px;
   display: inline-block;
-  border: 4px solid red;
-  border-radius: 50%;
+  border: 4px solid;
+  border-color: #993404;
+  border-radius: 150px;
+  /* border-style: inset outset outset inset;  */
   margin-left: 10px;
   margin-top: 5px;
+  padding: 8px 8px 0 8px;
   height: 4em;
-  width: 4em;
-  background-color: #d95f0e
-  text-align: center;
+  width: auto;
+  background-color: #d95f0e;
+  background-image: radial-gradient(hsl(60, 90%, 95%),  hsl(60, 100%, 85%));
 }
-
-/* #origin-points-icons > div > p {
-  text-align: center;
-  vertical-align: middle;
-  line-height: 3em;
-} */
 
 #category > button {
   /* position: relative; */
-  /* font: small "Bowlby One SC"; */
+  font:  20px 'Ubuntu';
   vertical-align: middle;
   margin-top: 5em;
   display: inline-block;
-  border: 3px solid red;
-  border-radius: 50%;
+  /* border: 3px solid red; */
+  border-radius: 150px;
+  border: solid #ec7014;
+  border-width: 4px;
+  /* border-color: #ec7014; */
+  /* background-image: radial-gradient(hsl(19, 90%, 60%), hsl(19, 95%, 35%)); */
+  background-image: radial-gradient(hsl(60, 90%, 95%),  hsl(60, 100%, 85%));
   margin-left: 20px;
   /* margin-top: 5px; */
-  height: 7em;
-  width: 7em;
-  background-color: #d95f0e
+  height: auto;
+  width: auto;
+  background-color: #ffffd4
+}
+
+.leaflet-popup-content {
+  font-family: 'Ubuntu';
 }
 
 #mapid {
@@ -88,7 +113,8 @@ body {
   border-width: 9px;
   border-style: solid;
   border-color: #993404;
-  border-radius: 200px;
+  border-radius: 200px 200px;
   /* border-radius: 50px; */
   /* border-radius: 50%; */
+  border-style: groove ridge ridge groove;
 }
