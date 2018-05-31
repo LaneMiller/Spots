@@ -8,27 +8,25 @@ body {
 }
 
 .header {
-  margin: 2% auto 0;
+  margin: -18px auto 0;
   font: 6em "Bowlby One SC";
   color: #fbffd4;
-  /* text-decoration: underline; */
   text-shadow: -5px 6px #993404, -9px 10px #d46611, -12px 13px #cc4c02;
 }
 
 #form-field{
-  width: 90%;
-  height: 10em;
+  padding: 20px;
+  width: 85%;
+  height: 15em;
   background-color: #ffffd4;
-  margin: 2% auto 0;
+  margin: 0px auto 0;
   opacity: 0.95;
 
+  /* border-radius: 25px; */
+  border-radius: 150px;
   border-width: 9px;
   border-style: solid;
   border-color: #993404;
-}
-
-.user-inputs {
-  margin-top: 20px;
 }
 
 #my-location-button {
@@ -40,23 +38,46 @@ body {
 
 #primary-input {
   vertical-align: middle;
+  height: 20px;
+  width: 250px;
+  border-radius: 25px;
 }
 
 #origin-points-icons > div {
+  /* font: x-small "Bowlby One SC"; */
+  vertical-align: middle;
+  position: relative;
+  top: 10px;
   display: inline-block;
-  border: 3px solid red;
+  border: 4px solid red;
   border-radius: 50%;
-  margin-left: 5px;
+  margin-left: 10px;
   margin-top: 5px;
-  height: 5em;
-  width: 5em;
+  height: 4em;
+  width: 4em;
   background-color: #d95f0e
+  text-align: center;
 }
 
-#origin-points-icons > div > p {
+/* #origin-points-icons > div > p {
   text-align: center;
   vertical-align: middle;
   line-height: 3em;
+} */
+
+#category > button {
+  /* position: relative; */
+  /* font: small "Bowlby One SC"; */
+  vertical-align: middle;
+  margin-top: 5em;
+  display: inline-block;
+  border: 3px solid red;
+  border-radius: 50%;
+  margin-left: 20px;
+  /* margin-top: 5px; */
+  height: 7em;
+  width: 7em;
+  background-color: #d95f0e
 }
 
 #mapid {
@@ -67,5 +88,7 @@ body {
   border-width: 9px;
   border-style: solid;
   border-color: #993404;
-  border-radius: 50%;
+  border-radius: 200px;
+  /* border-radius: 50px; */
+  /* border-radius: 50%; */
 }
