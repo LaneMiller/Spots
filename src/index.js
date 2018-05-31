@@ -62,7 +62,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     if (address) {
       popuptext = address
     } else {
-      popuptext = "MyLocation"
+      popuptext = "My Location"
     }
 
     if (!origins[popuptext]) {
