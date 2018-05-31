@@ -24,6 +24,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     origin6 = new IconOrigin({iconUrl: 'img/orig_6.png'});
     originX = new IconOrigin({iconUrl: 'img/orig_x.png'});
     dest = new IconOrigin({iconUrl: 'img/dest.png', iconSize: [75,75], iconAnchor: [37, 70], popupAnchor:  [0, -70]});
+    avg = new IconOrigin({iconUrl: 'img/avg.png', iconSize: [40,40], iconAnchor: [22, 48], popupAnchor:  [0, -45]})
 
   let myLat
   let myLon
@@ -148,7 +149,7 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
       }
 
       if (Object.keys(origins).length > 1){
-      averagePin = new L.marker([newLat, newLon]).addTo(mymap);
+      averagePin = new L.marker([newLat, newLon], {icon: avg}).addTo(mymap);
       averagePin.bindPopup(`Average Point`);
     }
   }
