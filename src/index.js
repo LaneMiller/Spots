@@ -188,7 +188,9 @@ var origin1 = new IconOrigin({iconUrl: 'img/orig_1.png'}),
     }
 
     function addCategoryHTML(category) {
-      return `<button data-id='${category.id}'>${category.name}</button>`;
+      const categoryName = category.name.split(' ').join(`<br>`)
+      console.log(categoryName);
+      return `<button data-id='${category.id}'>${categoryName}</button>`;
     }
 
     function addCategoryListener() {
