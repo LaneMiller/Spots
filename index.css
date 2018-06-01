@@ -84,6 +84,14 @@ body {
   background-image: radial-gradient(hsl(60, 90%, 95%),  hsl(60, 100%, 85%));
 }
 
+#origin-points-icons > div:hover {
+  background-image: url('./assets/imgs/red-x.png');
+  background-color: inherit;
+  color: hsla(0, 0%, 0%, 0.4);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 #category > button {
   /* position: relative; */
   font: 18px 'Bowlby One SC';
