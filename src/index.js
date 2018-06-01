@@ -120,6 +120,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     newOriginPoint.innerHTML = `<p>${popuptext}</p>`
     originPointsContainer.append(newOriginPoint)
 
+    newOriginPoint.addEventListener('mouseover', function(e) {
+      // newOriginPoint.innerHTML += `<style>#origin-points-icons > div {background-image: url(https://vignette.wikia.nocookie.net/creation/images/7/7e/Red_x.png/revision/latest?cb=20160323201834)}</style>`
+    })
+
     deleteOriginIcon(newOriginPoint, marker)
   }
 
@@ -130,7 +134,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
       marker.remove();
       let i = 1;
       for (let key in markers._layers) {
-        console.log(markers._layers[key]);
         if (i < 7) {
           markers._layers[key]._icon.src = `img/orig_${i}.png`
         }
@@ -142,6 +145,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       OriginIcon.remove();
       findAverage(origins)
     })
+
+
   }
 
   // calculates average point of all origins and places a pin
@@ -165,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       averagePin.bindPopup(`Average Point`);
     }
   }
-    else {
+    else if (averagePin) {
       averagePin.remove()
       averagePin = undefined;
     }
@@ -193,10 +198,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     function displayCategories(categories) {
       categories.forEach(category => {categoryDiv.innerHTML += addCategoryHTML(category)});
-      const addNewDestCat = document.createElement('button')
-      addNewDestCat.setAttribute('id', 'addNewDestCatButton')
-      addNewDestCat.innerHTML = '+'
-      categoryDiv.append(addNewDestCat)
+      // const addNewDestCat = document.createElement('button')
+      // addNewDestCat.setAttribute('id', 'addNewDestCatButton')
+      // addNewDestCat.innerHTML = '+'
+      // categoryDiv.append(addNewDestCat)
     }
 
     function addCategoryHTML(category) {
