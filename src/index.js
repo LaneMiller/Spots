@@ -227,23 +227,49 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
     function buildNewDestForm() {
-      const newLocationTextField = document.getElementById('newDestInputField')
-      newLocationTextField.addEventListener('keydown', (e)=>{
-        if (e.key === 'Enter') {
-          const newDestQuery = e.target.value
-          fetch(`http://localhost:3000/api/v1/search/${newDestQuery}`).then(json=>json.json() ).then(json=>console.log(json) )
-        }
+      const newLocationTextField = document.getElementById('newDestForm')
+      newLocationTextField.addEventListener('submit', (e)=>{
+        e.preventDefault()
+        const newDestQuery = e.target[1].value
+        const newDestCat = e.target[0].value
+        fetch(`http://localhost:3000/api/v1/search/${newDestQuery}`).then(json=>json.json()).then(json=>buildGoogleDestList(json, newDestCat) )
 
       })
     }
 
-    // function buildGoogleDestList(listOfDests) {
-    //
-    //   for (const dest of listOfDests){
-    //     // const newDestForList
-    //   }
-    //
-    // }
+    function buildGoogleDestList(listOfDests, selectedCategory) {
+      const destListResults = document.getElementById('crud-results')
+      for (const dest of listOfDests.results){
+        const newListResultItem = document.createElement('button')
+        newListResultItem.setAttribute('id', `googlePlace-${dest.place_id}`)
+        newListResultItem.setAttribute('data-name', `${dest.name},${dest.geometry.location.lat},${dest.geometry.location.lng}`)
+        const newListResultItemName = document.createElement('p')
+        newListResultItemName.innerHTML = dest.name +' - '+ dest.rating
+        const newListResultItemAddress = document.createElement('p')
+        newListResultItemAddress.innerHTML = dest.formatted_address
+        newListResultItem.append(newListResultItemName, newListResultItemAddress)
+        newListResultItem.addEventListener('click', (e)=>{
+          console.log(selectedCategory)
+          const selectedDestData = e.target.parentElement.getAttribute('data-name').split(',')
+        })
+        destListResults.append(newListResultItem)
+        if (destListResults.childElementCount >= 5){
+          const submitButton = document.createElement('button')
+          submitButton.setAttribute('id','submit')
+          submitButton.innerHTML = 'Cancel'
+          break
+        }
+      }
+
+    }
+//
+// t.string "name"
+// t.decimal "x_lon"
+// t.decimal "y_lat"
+// t.string "street"
+// t.string "city"
+// t.string "state"
+// t.string "zip"
 
 
 
