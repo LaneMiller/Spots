@@ -307,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 // t.string "zip"
 
 
-
     function shortestDistance(locations, avgPoint) {
       const array  = locations.map(location => distanceCalc(parseFloat(location.x_lon), avgPoint[0], parseFloat(location.y_lat), avgPoint[1]))
       const  shortest =  [...array].sort()[0];

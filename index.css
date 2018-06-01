@@ -84,6 +84,14 @@ body {
   background-image: radial-gradient(hsl(60, 90%, 95%),  hsl(60, 100%, 85%));
 }
 
+#origin-points-icons > div:hover {
+  background-image: url('./assets/imgs/red-x.png');
+  background-color: inherit;
+  color: hsla(0, 0%, 0%, 0.4);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 #category > button {
   /* position: relative; */
   font: 18px 'Bowlby One SC';
@@ -161,7 +169,7 @@ body {
     position: fixed;
     top: 23%;
     left: 50%;
-    font-size: 32px;
+    font-size: 35px;
     color: rgba(255, 255, 255);;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
@@ -169,9 +177,9 @@ body {
 
 #step2{
     position: fixed;
-    top: 40%;
+    top: 45%;
     left: 50%;
-    font-size: 32px;
+    font-size: 35px;
     color: rgba(255, 255, 255);;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
@@ -179,9 +187,9 @@ body {
 
 #step3{
     position: fixed;
-    top: 57%;
+    top: 65%;
     left: 50%;
-    font-size: 32px;
+    font-size: 35px;
     color: rgba(255, 255, 255);;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
@@ -189,7 +197,7 @@ body {
 
 #text{
     position: fixed;
-    top: 72%;
+    top: 80%;
     left: 50%;
     font-size: 45px;
     color: rgba(255, 255, 255);;
