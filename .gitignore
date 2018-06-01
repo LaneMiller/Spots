@@ -7,6 +7,7 @@
 *.o
 *.so
 keys.js
+./src/keys.js
 
 # Packages #
 ############
