@@ -242,10 +242,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
 
       })
+
+      const cancelButton = document.createElement('button')
+      cancelButton.setAttribute('id','submit')
+      cancelButton.innerHTML = 'Cancel'
+      cancelButton.addEventListener('click', (e)=>{
+        document.getElementById("crud-form").style.display = "none";
+        document.getElementById("newDestInputField").value = '';
+        document.getElementById('crud-results').innerHTML = '';
+        cancelButton.remove()
+      })
+      const overlayDiv = document.getElementById('crud-form')
+      overlayDiv.append(cancelButton)
     }
 
     function buildGoogleDestList(listOfDests, selectedCategory) {
       const destListResults = document.getElementById('crud-results')
+
       for (const dest of listOfDests.results){
         const newListResultItem = document.createElement('button')
         newListResultItem.setAttribute('id', `googlePlace-${dest.place_id}`)
@@ -268,6 +281,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
              document.getElementById("crud-form").style.display = "none";
              document.getElementById("newDestInputField").value = '';
              document.getElementById('crud-results').innerHTML = '';
+             const cancelButton = document.getElementById('submit')
+             cancelButton.remove()
              alert("Location Added!");
              console.log(res);
            })
@@ -277,15 +292,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
           destListResults.append(newListResultItem)}
         if (destListResults.childElementCount >= 5){
           console.log(destListResults.childElementCount)
-          const submitButton = document.createElement('button')
-          submitButton.setAttribute('id','submit')
-          submitButton.innerHTML = 'Cancel'
-          submitButton.addEventListener('click', (e)=>{
-            document.getElementById("crud-form").style.display = "none";
-            document.getElementById("newDestInputField").value = '';
-            document.getElementById('crud-results').innerHTML = '';
-          })
-          destListResults.append(submitButton)
           break
         }
       }
