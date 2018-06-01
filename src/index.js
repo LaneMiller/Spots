@@ -198,10 +198,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     function displayCategories(categories) {
       categories.forEach(category => {categoryDiv.innerHTML += addCategoryHTML(category)});
-      // const addNewDestCat = document.createElement('button')
-      // addNewDestCat.setAttribute('id', 'addNewDestCatButton')
-      // addNewDestCat.innerHTML = '+'
-      // categoryDiv.append(addNewDestCat)
+      const addNewDestCat = document.createElement('button')
+      addNewDestCat.setAttribute('id', 'addNewDestCatButton')
+      addNewDestCat.innerHTML = '+'
+      categoryDiv.append(addNewDestCat)
     }
 
     function addCategoryHTML(category) {
