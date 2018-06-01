@@ -233,11 +233,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     function buildNewDestForm() {
       const newLocationTextField = document.getElementById('newDestForm')
-      newLocationTextField.addEventListener('submit', (e)=>{
+      newLocationTextField.addEventListener('keydown', (e)=>{
         e.preventDefault()
-        const newDestQuery = e.target[1].value
-        const newDestCat = e.target[0].value
-        fetch(`http://localhost:3000/api/v1/search/${newDestQuery}`).then(json=>json.json()).then(json=>buildGoogleDestList(json, newDestCat) )
+        if (e.key === 'Enter') {
+          const newDestQuery = e.target.value
+          const newDestCat = e.target.previousElementSibling.value
+          fetch(`http://localhost:3000/api/v1/search/${newDestQuery}`).then(json=>json.json()).then(json=>buildGoogleDestList(json, newDestCat) )
+        }
 
       })
     }
@@ -253,15 +255,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
         const newListResultItemAddress = document.createElement('p')
         newListResultItemAddress.innerHTML = dest.formatted_address
         newListResultItem.append(newListResultItemName, newListResultItemAddress)
+
         newListResultItem.addEventListener('click', (e)=>{
-          console.log(selectedCategory)
-          const selectedDestData = e.target.parentElement.getAttribute('data-name').split(',')
+          e.preventDefault()
+
+          const selectedDestData = e.currentTarget.getAttribute('data-name').split(',')
+          let locName = selectedDestData[0];
+          let locLat = selectedDestData[1];
+          let locLon = selectedDestData[2];
+
+          fetchOperations.fetchLocationCreate({name: locName, x_lon: locLat, y_lat: locLon, categories: [selectedCategory]}).then( (res) => { document.getElementById("crud-form").style.display = "none"; alert("Location Added!"); console.log(res); )
+
         })
         destListResults.append(newListResultItem)
         if (destListResults.childElementCount >= 5){
           const submitButton = document.createElement('button')
           submitButton.setAttribute('id','submit')
           submitButton.innerHTML = 'Cancel'
+          destListResults.append(submitButton)
           break
         }
       }
@@ -339,6 +350,11 @@ const fetchOperations = {
   },
   fetchLocation: function(id) {
     return fetch(`${this.locationUrl}/${id}`).then(this.parseJson);
+  },
+  fetchLocationCreate: function(bodyParams){
+    const config = {method: 'POST',
+    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}, body: JSON.stringify(bodyParams)}
+    return fetch(this.locationUrl, config).then(this.parseJson);
   }
   /*
   headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
