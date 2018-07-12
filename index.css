@@ -58,7 +58,11 @@ body {
   background-color: hsl(60, 90%, 95%);
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
+<<<<<<< HEAD
   border-top-left-radius: -20%;
+=======
+  /* border-top-left-radius: -20%; */
+>>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
   border-style: solid;
   border-color: #993404;
 }
@@ -114,6 +118,59 @@ body {
   background-color: #ffffd4
 }
 
+<<<<<<< HEAD
+=======
+#newDestForm > select {
+  vertical-align: middle;
+  height: 2.45em;
+}
+
+#crud-results > button {
+  font: 17px 'Bowlby One SC';
+  outline: none;
+
+  display: block;
+  /* align-items: center; */
+  /* border: 3px solid red; */
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border-radius: 150px;
+  border: solid #ec7014;
+  border-width: 4px;
+  /* border-color: #ec7014; */
+  /* background-image: radial-gradient(hsl(19, 90%, 60%), hsl(19, 95%, 35%)); */
+  background-image: radial-gradient(hsl(60, 90%, 95%),  hsl(60, 100%, 85%));
+  position: relative;
+  right: 18px;
+  margin-left: 31em;
+  margin-top: 2em;
+  /* margin-top: 5px; */
+  height: 6em;
+  width: auto;
+  background-color: #ffffd4
+}
+
+#crud-results > button:hover {
+
+}
+
+#newDestInputField {
+  vertical-align: middle;
+  outline: none;
+  margin-left: -3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  height: 20px;
+  width: 250px;
+  padding-left: 10px;
+  background-color: hsl(60, 90%, 95%);
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  border-style: solid;
+  border-color: #993404;
+}
+
+>>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
 .leaflet-popup-content {
   font: 16px 'Ubuntu';
 }

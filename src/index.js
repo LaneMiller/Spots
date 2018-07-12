@@ -120,6 +120,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     newOriginPoint.innerHTML = `<p>${popuptext}</p>`
     originPointsContainer.append(newOriginPoint)
 
+<<<<<<< HEAD
+=======
+    newOriginPoint.addEventListener('mouseover', function(e) {
+      // newOriginPoint.innerHTML += `<style>#origin-points-icons > div {background-image: url(https://vignette.wikia.nocookie.net/creation/images/7/7e/Red_x.png/revision/latest?cb=20160323201834)}</style>`
+    })
+
+>>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
     deleteOriginIcon(newOriginPoint, marker)
   }
 
@@ -141,6 +148,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
       OriginIcon.remove();
       findAverage(origins)
     })
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
   }
 
   // calculates average point of all origins and places a pin
@@ -192,10 +204,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     function displayCategories(categories) {
       categories.forEach(category => {categoryDiv.innerHTML += addCategoryHTML(category)});
+<<<<<<< HEAD
       // const addNewDestCat = document.createElement('button')
       // addNewDestCat.setAttribute('id', 'addNewDestCatButton')
       // addNewDestCat.innerHTML = '+'
       // categoryDiv.append(addNewDestCat)
+=======
+      const addNewDestCat = document.createElement('button')
+      addNewDestCat.setAttribute('id', 'addNewDestCatButton')
+      addNewDestCat.innerHTML = '+'
+      categoryDiv.append(addNewDestCat)
+>>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
     }
 
     function addCategoryHTML(category) {
@@ -225,6 +244,86 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     }
 
+<<<<<<< HEAD
+=======
+    function buildNewDestForm() {
+      const newLocationTextField = document.getElementById('newDestForm')
+      newLocationTextField.addEventListener('keydown', (e)=>{
+        if (e.key === 'Enter') {
+          e.preventDefault()
+          const newDestQuery = e.target.value
+          const newDestCat = e.target.previousElementSibling.value
+          fetch(`http://localhost:3000/api/v1/search/${newDestQuery}`).then(json=>json.json()).then(json=>buildGoogleDestList(json, newDestCat) )
+        }
+
+      })
+
+      const cancelButton = document.createElement('button')
+      cancelButton.setAttribute('id','submit')
+      cancelButton.innerHTML = 'Cancel'
+      cancelButton.addEventListener('click', (e)=>{
+        document.getElementById("crud-form").style.display = "none";
+        document.getElementById("newDestInputField").value = '';
+        document.getElementById('crud-results').innerHTML = '';
+        cancelButton.remove()
+      })
+      const overlayDiv = document.getElementById('crud-form')
+      overlayDiv.append(cancelButton)
+    }
+
+    function buildGoogleDestList(listOfDests, selectedCategory) {
+      const destListResults = document.getElementById('crud-results')
+
+      for (const dest of listOfDests.results){
+        const newListResultItem = document.createElement('button')
+        newListResultItem.setAttribute('id', `googlePlace-${dest.place_id}`)
+        newListResultItem.setAttribute('data-name', `${dest.name},${dest.geometry.location.lat},${dest.geometry.location.lng}`)
+        const newListResultItemName = document.createElement('p')
+        newListResultItemName.innerHTML = dest.name +' - '+ dest.rating
+        const newListResultItemAddress = document.createElement('p')
+        newListResultItemAddress.innerHTML = dest.formatted_address
+        newListResultItem.append(newListResultItemName, newListResultItemAddress)
+
+        newListResultItem.addEventListener('click', (e)=>{
+          e.preventDefault()
+
+          const selectedDestData = e.currentTarget.getAttribute('data-name').split(',')
+          let locName = selectedDestData[0];
+          let locLat = selectedDestData[1];
+          let locLon = selectedDestData[2];
+
+          fetchOperations.fetchLocationCreate({name: locName, x_lon: locLat, y_lat: locLon, categories: [selectedCategory]}).then( (res) => {
+             document.getElementById("crud-form").style.display = "none";
+             document.getElementById("newDestInputField").value = '';
+             document.getElementById('crud-results').innerHTML = '';
+             const cancelButton = document.getElementById('submit')
+             cancelButton.remove()
+             alert("Location Added!");
+             console.log(res);
+           })
+
+        })
+        if (destListResults.childElementCount < 5){
+          destListResults.append(newListResultItem)}
+        if (destListResults.childElementCount >= 5){
+          console.log(destListResults.childElementCount)
+          break
+        }
+      }
+
+    }
+//
+// t.string "name"
+// t.decimal "x_lon"
+// t.decimal "y_lat"
+// t.string "street"
+// t.string "city"
+// t.string "state"
+// t.string "zip"
+
+
+
+>>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
     function shortestDistance(locations, avgPoint) {
       const array  = locations.map(location => distanceCalc(parseFloat(location.x_lon), avgPoint[0], parseFloat(location.y_lat), avgPoint[1]))
       const  shortest =  [...array].sort()[0];
@@ -244,7 +343,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
     function forEachCategory(categories) {
+<<<<<<< HEAD
       categories.forEach(addOptionToSelect)
+=======
+      if (!select.children.length) {
+        categories.forEach(addOptionToSelect)
+      }
+>>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
     }
 
     function addOptionToSelect(category) {
@@ -286,6 +391,14 @@ const fetchOperations = {
   },
   fetchLocation: function(id) {
     return fetch(`${this.locationUrl}/${id}`).then(this.parseJson);
+<<<<<<< HEAD
+=======
+  },
+  fetchLocationCreate: function(bodyParams){
+    const config = {method: 'POST',
+    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}, body: JSON.stringify(bodyParams)}
+    return fetch(this.locationUrl, config).then(this.parseJson);
+>>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
   }
   /*
   headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},

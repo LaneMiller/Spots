@@ -7,6 +7,10 @@
 *.o
 *.so
 keys.js
+<<<<<<< HEAD
+=======
+./src/keys.js
+>>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
 
 # Packages #
 ############
