@@ -58,11 +58,7 @@ body {
   background-color: hsl(60, 90%, 95%);
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
-<<<<<<< HEAD
-  border-top-left-radius: -20%;
-=======
   /* border-top-left-radius: -20%; */
->>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
   border-style: solid;
   border-color: #993404;
 }
@@ -118,8 +114,6 @@ body {
   background-color: #ffffd4
 }
 
-<<<<<<< HEAD
-=======
 #newDestForm > select {
   vertical-align: middle;
   height: 2.45em;
@@ -170,7 +164,6 @@ body {
   border-color: #993404;
 }
 
->>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
 .leaflet-popup-content {
   font: 16px 'Ubuntu';
 }

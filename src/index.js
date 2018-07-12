@@ -120,13 +120,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     newOriginPoint.innerHTML = `<p>${popuptext}</p>`
     originPointsContainer.append(newOriginPoint)
 
-<<<<<<< HEAD
-=======
     newOriginPoint.addEventListener('mouseover', function(e) {
       // newOriginPoint.innerHTML += `<style>#origin-points-icons > div {background-image: url(https://vignette.wikia.nocookie.net/creation/images/7/7e/Red_x.png/revision/latest?cb=20160323201834)}</style>`
     })
 
->>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
     deleteOriginIcon(newOriginPoint, marker)
   }
 
@@ -148,11 +145,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       OriginIcon.remove();
       findAverage(origins)
     })
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
   }
 
   // calculates average point of all origins and places a pin
@@ -204,17 +197,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     function displayCategories(categories) {
       categories.forEach(category => {categoryDiv.innerHTML += addCategoryHTML(category)});
-<<<<<<< HEAD
-      // const addNewDestCat = document.createElement('button')
-      // addNewDestCat.setAttribute('id', 'addNewDestCatButton')
-      // addNewDestCat.innerHTML = '+'
-      // categoryDiv.append(addNewDestCat)
-=======
       const addNewDestCat = document.createElement('button')
       addNewDestCat.setAttribute('id', 'addNewDestCatButton')
       addNewDestCat.innerHTML = '+'
       categoryDiv.append(addNewDestCat)
->>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
     }
 
     function addCategoryHTML(category) {
@@ -244,8 +230,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     }
 
-<<<<<<< HEAD
-=======
     function buildNewDestForm() {
       const newLocationTextField = document.getElementById('newDestForm')
       newLocationTextField.addEventListener('keydown', (e)=>{
@@ -323,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
 
->>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
     function shortestDistance(locations, avgPoint) {
       const array  = locations.map(location => distanceCalc(parseFloat(location.x_lon), avgPoint[0], parseFloat(location.y_lat), avgPoint[1]))
       const  shortest =  [...array].sort()[0];
@@ -343,13 +326,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
     function forEachCategory(categories) {
-<<<<<<< HEAD
-      categories.forEach(addOptionToSelect)
-=======
       if (!select.children.length) {
         categories.forEach(addOptionToSelect)
       }
->>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
     }
 
     function addOptionToSelect(category) {
@@ -391,14 +370,11 @@ const fetchOperations = {
   },
   fetchLocation: function(id) {
     return fetch(`${this.locationUrl}/${id}`).then(this.parseJson);
-<<<<<<< HEAD
-=======
   },
   fetchLocationCreate: function(bodyParams){
     const config = {method: 'POST',
     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}, body: JSON.stringify(bodyParams)}
     return fetch(this.locationUrl, config).then(this.parseJson);
->>>>>>> 9c85b4bd0729d4dce8a991eb9c7e12492cc13425
   }
   /*
   headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
