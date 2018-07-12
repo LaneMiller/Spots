@@ -264,7 +264,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         newListResultItem.setAttribute('id', `googlePlace-${dest.place_id}`)
         newListResultItem.setAttribute('data-name', `${dest.name},${dest.geometry.location.lat},${dest.geometry.location.lng}`)
         const newListResultItemName = document.createElement('p')
-        newListResultItemName.innerHTML = dest.name +' - '+ dest.rating
+        if (dest.rating){
+          newListResultItemName.innerHTML = dest.name +' - '+ dest.rating
+        }else{
+          newListResultItemName.innerHTML = dest.name
+        }
         const newListResultItemAddress = document.createElement('p')
         newListResultItemAddress.innerHTML = dest.formatted_address
         newListResultItem.append(newListResultItemName, newListResultItemAddress)

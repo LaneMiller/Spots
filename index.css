@@ -135,11 +135,13 @@ body {
   /* background-image: radial-gradient(hsl(19, 90%, 60%), hsl(19, 95%, 35%)); */
   background-image: radial-gradient(hsl(60, 90%, 95%),  hsl(60, 100%, 85%));
   position: relative;
-  right: 18px;
-  margin-left: 31em;
-  margin-top: 2em;
+  /* right: 18px; */
+  margin-left: auto;
+  margin-right: auto;
+  /* margin-left: 31em; */
+  margin-top: 1em;
   /* margin-top: 5px; */
-  height: 6em;
+  height: 7em;
   width: auto;
   background-color: #ffffd4
 }
