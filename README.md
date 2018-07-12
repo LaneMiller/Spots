@@ -4,6 +4,7 @@ Spots is an app that helps people meet up at a central location. Simply enter yo
 
 ## Build status
 Front end: Check workingDemo branch for current working version
+<br/>
 Backend: Master
 ## Screenshots
 <img src="spotsApp.png" alt="spots app img">
